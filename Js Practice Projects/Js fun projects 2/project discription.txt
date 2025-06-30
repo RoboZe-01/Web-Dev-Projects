@@ -1,0 +1,7 @@
+**Problem Statement** : Ek rectangle banao jb mouse centre par ho rectangle centre pe ho , jb mouse left jaana shuru ho rectangle bhi left jaana shuru hojaaye , par jaise jaise mouse left jaaye rectanagle ki speed slow hojaaye same happens with right side as well 
+
+
+
+
+
+
