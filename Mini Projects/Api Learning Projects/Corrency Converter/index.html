@@ -4,10 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Simple currency convertor</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        
-    </div>
+   <main>
+    <section>
+        <div class="container">
+            <h1>Currency Convertor</h1>
+            <div class="input-container">
+                <input type="number" value="1" min="1" id="amount" placeholder="Enter amount">
+                <select name="" class="fromCurrency">
+                    <option value="INR">INR</option>
+                    <option value="USD">USD</option>
+                </select>
+            </div>
+            <div class="arrow">
+                ➪
+            </div>
+            <div class="input-container">
+                <input type="number" id="converted-amount" placeholder="Enter amount">
+                <select name="" id="toCurrency">
+                    <option value="INR">INR</option>
+                    <option value="USD">USD</option>
+                </select>
+            </div>
+            <div class="result">1 USD </div>
+
+
+
+
+         
+        </div>
+    </section>
+   </main>
 </body>
 </html>
