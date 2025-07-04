@@ -23,13 +23,67 @@ body{
     text-align: center;
 }
 .container h1{
+    font-size: 28px;
+
     text-align: center;
-    color: #000000;
+    color: #202124;
     font-weight: 600;
     margin-bottom: 40px;
     text-decoration: underline;
 }
-
 .container .input-container{
+    border: 2px solid #bbbbbd;
+    border-radius: 5px;
+    margin-block: 20px;
+}
+.container .input-container:focus-within
+    /* This is the border color when the input is focused */    {
+    border-color: #0056b3;
+}
+.container .input-container input,
+.container .input-container select{
+    width: 150px;
+    outline: none;
+    border: none;
+    font-size: 20px;
+    padding: 8px;
+    overflow: hidden;
+
   
+}
+.container  .arrow{
+    transform: rotate(90deg);
+    font-size: 40px;
+}
+.container .result{
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+
+/* Responsive Code  */
+
+@media screen and (max-width: 600px) {
+    .container{
+        width: 90%;
+        padding: 20px;
+        margin: 0 auto;
+    }
+    .container h1{
+        font-size: 24px;
+    }
+    .container .input-container input,
+    .container .input-container select{
+        width: 100%;
+        margin-block:4px ;
+        border: 1px solid #ccc;
+    }
+    .container .arrow{
+        font-size: 30px;
+    }
+    .container .result{
+        font-size: 18px;
+    }
+    
 }
