@@ -2,6 +2,13 @@
 let shareCount = 0;
 const maxShares = 5;
 
+
+// Dark Mode Toggle
+document.getElementById("themeToggle").addEventListener("click", () => {
+  document.body.classList.toggle("dark");
+});
+
+
 // 💬 DOM Elements
 const shareBtn = document.getElementById("whatsappShareBtn");
 const shareCounter = document.getElementById("shareCounter");
