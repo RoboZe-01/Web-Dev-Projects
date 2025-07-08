@@ -103,15 +103,38 @@ form.addEventListener("submit", function (e) {
 
   // 💾 Simulate Data Submission (replace this block with fetch POST to Google Apps Script later)
   setTimeout(() => {
-    // Disable the entire form
+    const formData = {
+  name: document.getElementById("name").value.trim(),
+  phone: document.getElementById("phone").value.trim(),
+  email: document.getElementById("email").value.trim(),
+  department: document.getElementById("department").value,
+  screenshot: fileInput.files[0]?.name || "Not uploaded"
+};
+
+fetch("https://script.google.com/macros/s/AKfycbwoLYuvMJGaHbrM9HOLAfvpe6mWxpoGJftZsGVP2D1nNBW2sZyaWUHz0ad5p9zOGd-AJg/exec", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify(formData)
+})
+.then(response => response.json())
+.then(data => {
+  if (data.status === "success") {
     const inputs = form.querySelectorAll("input, select, button");
     inputs.forEach((el) => (el.disabled = true));
-
     successMessage.style.display = "block";
     submitBtn.innerText = "Submitted ✅";
-
-    // Store flag to prevent re-submission
     localStorage.setItem("hasSubmitted", "true");
+  } else {
+    alert("❌ Submission failed. Try again later.");
+  }
+})
+.catch(error => {
+  console.error("Error submitting:", error);
+  alert("🚨 Network error occurred. Try again.");
+});
+
   }, 1000);
 });
 
