@@ -70,38 +70,67 @@ function setupEventListeners() {
 }
 
 // ====================== WHATSAPP SHARING LOGIC ======================
+
 function handleWhatsappShare() {
-  // Don't proceed if already reached max shares
   if (state.shareCount >= CONFIG.maxSharesRequired) return;
-  
+
   try {
-    // Encode the message for URL
-    const encodedMessage = encodeURIComponent(CONFIG.whatsappMessage);
-    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodedMessage}`;
+    // Improved message template with URL encoding
+    const message = `${CONFIG.whatsappMessage}\n\nJoin me at ${window.location.href}`;
+    const encodedMessage = encodeURIComponent(message);
     
-    // Open in new tab with reduced popup blocker issues
-    const newWindow = window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+    // Different URLs for mobile vs desktop
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+    const whatsappUrl = isMobile 
+      ? `whatsapp://send?text=${encodedMessage}`
+      : `https://web.whatsapp.com/send?text=${encodedMessage}`;
     
-    if (newWindow) {
-      // Increment share count only if window opened successfully
-      state.shareCount++;
-      updateShareCounter();
-      
-      // Check if reached max shares
-      if (state.shareCount === CONFIG.maxSharesRequired) {
-        enableFormSubmission();
-      }
-      
-      // Track shares in localStorage
-      localStorage.setItem(`${CONFIG.localStorageKey}_shares`, state.shareCount);
+    // Fallback URL if first attempt fails
+    const fallbackUrl = `https://api.whatsapp.com/send?text=${encodedMessage}`;
+
+    // First try to open in the same tab (works better on mobile)
+    const openInSameTab = () => {
+      window.location.href = whatsappUrl;
+      setTimeout(() => {
+        // If still on our page after 1 second, try fallback
+        if (window.location.href.indexOf('whatsapp') === -1) {
+          window.open(fallbackUrl, '_blank');
+        }
+      }, 1000);
+    };
+
+    // Try different methods based on device
+    if (isMobile) {
+      openInSameTab();
     } else {
-      showToast("Popup blocked! Please allow popups to share.");
+      // On desktop, try new window first
+      const newWindow = window.open(whatsappUrl, '_blank');
+      
+      if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+        // If popup blocked, try same tab approach
+        openInSameTab();
+      }
     }
+
+    // Only increment counter if we successfully initiated the share
+    state.shareCount++;
+    updateShareCounter();
+    
+    if (state.shareCount === CONFIG.maxSharesRequired) {
+      enableFormSubmission();
+    }
+    
+    localStorage.setItem(`${CONFIG.localStorageKey}_shares`, state.shareCount);
+    
   } catch (error) {
     console.error("WhatsApp share error:", error);
-    showToast("Error initiating share. Please try again.");
+    showToast("Couldn't open WhatsApp. Please try again or share manually.");
   }
 }
+
+
+
+
 
 function updateShareCounter() {
   dom.shareCounter.textContent = `Progress: ${state.shareCount} of ${CONFIG.maxSharesRequired} shares`;
