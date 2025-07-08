@@ -49,23 +49,40 @@ clearBtn.addEventListener("click", () => {
   fileWrapper.innerHTML = ""; // remove filename + button
 });
 
+
+
 // 📱 WhatsApp Share Logic
+
 shareBtn.addEventListener("click", () => {
   if (shareCount >= maxShares) return;
 
-  const message = encodeURIComponent("Hey Buddy, Join Tech For Girls Community 🎀👩‍💻: https://example.com");
-  const whatsappUrl = `https://wa.me/?text=${message}`;
-  window.open(whatsappUrl, "_blank");
+  // Define your pre-written message
+  const message = "Hey Buddy 👋, Join Tech For Girls Community 🎀👩‍💻! It’s fun and empowering: https://yourcommunitylink.com";
 
+  // Encode the message properly
+  const encodedMessage = encodeURIComponent(message);
+
+  // Generate correct WhatsApp share link
+  const whatsappURL = `https://api.whatsapp.com/send?text=${encodedMessage}`;
+
+  // Open in a new tab
+  window.open(whatsappURL, "_blank");
+
+  // Update the click counter
   shareCount++;
   shareCounter.innerText = `Click count: ${shareCount} / ${maxShares}`;
 
-  // ✅ Show completed message after 5 shares
+  // After 5 clicks, disable and show message
   if (shareCount === maxShares) {
     shareMessage.classList.remove("hidden");
     shareBtn.disabled = true;
+    shareBtn.style.opacity = "0.5";
+    shareBtn.innerText = "Shared ✅";
   }
 });
+
+
+
 
 // ✅ Form Validation Utility Function
 function validateForm() {
@@ -140,7 +157,9 @@ fetch("https://script.google.com/macros/s/AKfycbwoLYuvMJGaHbrM9HOLAfvpe6mWxpoGJf
 .catch(error => {
   console.error("Error submitting:", error);
   alert("🚨 Network error occurred. Try again.");
+
 });
+
 
   }, 1000);
 });
