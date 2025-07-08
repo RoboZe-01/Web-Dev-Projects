@@ -238,35 +238,65 @@ async function submitToGoogleSheets() {
   try {
     // Show loading state
     dom.submitBtn.innerHTML = '<span class="btn-text">Submitting...</span>';
-    
-    // Create FormData for file upload
+    dom.submitBtn.disabled = true;
+
+    // Create FormData object
     const formData = new FormData();
-    formData.append("file", dom.fileInput.files[0]);
     
-    // Add other form data as JSON string
-    formData.append("formData", JSON.stringify(state.formData));
+    // Append the screenshot file if exists
+    if (dom.fileInput.files[0]) {
+      formData.append('file', dom.fileInput.files[0]);
+    }
     
+    // Append all other form data as JSON string
+    formData.append('formData', JSON.stringify({
+      timestamp: new Date().toISOString(),
+      name: dom.nameInput.value.trim(),
+      phone: dom.phoneInput.value.trim(),
+      email: dom.emailInput.value.trim(),
+      department: dom.departmentSelect.value,
+      sharesCompleted: state.shareCount
+    }));
+
+    // Add timeout handling
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
     // Send to Google Apps Script
     const response = await fetch(CONFIG.googleScriptUrl, {
-      method: "POST",
-      body: formData
+      method: 'POST',
+      body: formData,
+      signal: controller.signal
     });
-    
+
+    clearTimeout(timeoutId);
+
+    // Check if response is OK
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
     const result = await response.json();
-    
-    if (result.status === "success") {
+
+    // Check for success message from Google Script
+    if (result.status === 'success') {
       handleSubmissionSuccess();
     } else {
-      throw new Error(result.message || "Submission failed");
+      throw new Error(result.message || 'Unknown error from server');
     }
   } catch (error) {
-    console.error("Submission error:", error);
-    showToast("Submission failed. Please try again later.");
-    setFormState(true); // Re-enable form
+    console.error('Submission error:', error);
+    
+    let errorMessage = 'Submission failed. Please try again later.';
+    if (error.name === 'AbortError') {
+      errorMessage = 'Request timed out. Check your internet connection.';
+    }
+    
+    showToast(errorMessage);
     dom.submitBtn.innerHTML = '<span class="btn-text">Submit Registration</span>';
+    dom.submitBtn.disabled = false;
   }
 }
-
 function handleSubmissionSuccess() {
   // Update UI
   dom.successMessage.style.display = "block";
