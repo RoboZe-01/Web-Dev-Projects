@@ -9,13 +9,14 @@
  */
 
 // ====================== CONSTANTS & CONFIGURATION ======================
-const CONFIG = {
-  maxSharesRequired: 5,                // Number of shares required before submission
-  whatsappMessage: "Join Tech For Girls! 🚀 A community for women in tech. Register now: https://techforgirls.example.com", // Share message template
-  googleScriptUrl: "https://script.google.com/macros/s/AKfycbwoLYuvMJGaHbrM9HOLAfvpe6mWxpoGJftZsGVP2D1nNBW2sZyaWUHz0ad5p9zOGd-AJg/exec", // Google Apps Script URL
-  localStorageKey: "techForGirlsSubmission" // Key for localStorage
-};
 
+const CONFIG = {
+  maxSharesRequired: 5,
+  whatsappMessage: "Join Tech For Girls! 🚀 A community for women in tech. Register now: [YOUR_REGISTRATION_URL]",
+  googleScriptUrl: "https://script.google.com/macros/s/AKfycbxcff4F1yeqm3JzXWKFkeSLI78IIY1S1bEMuaAPrv_PuTKtF-o-uPWkRWGwAEKPacyqKg/exec",
+  localStorageKey: "techForGirlsSubmission",
+  sheetHeaders: ["Timestamp", "Name", "Phone", "Email", "Department", "Shares Completed", "Screenshot URL"]
+};
 // ====================== DOM ELEMENTS ======================
 const dom = {
   form: document.getElementById("registrationForm"),
@@ -234,67 +235,42 @@ function prepareFormData() {
   };
 }
 
+   // ====================== GOOGLE SHEETS SUBMISSION ======================
 async function submitToGoogleSheets() {
   try {
-    // Show loading state
-    dom.submitBtn.innerHTML = '<span class="btn-text">Submitting...</span>';
-    dom.submitBtn.disabled = true;
-
-    // Create FormData object
-    const formData = new FormData();
-    
-    // Append the screenshot file if exists
-    if (dom.fileInput.files[0]) {
-      formData.append('file', dom.fileInput.files[0]);
-    }
-    
-    // Append all other form data as JSON string
-    formData.append('formData', JSON.stringify({
+    const formData = {
       timestamp: new Date().toISOString(),
       name: dom.nameInput.value.trim(),
       phone: dom.phoneInput.value.trim(),
       email: dom.emailInput.value.trim(),
       department: dom.departmentSelect.value,
-      sharesCompleted: state.shareCount
-    }));
+      sharesCompleted: state.shareCount,
+      screenshot: dom.fileInput.files[0]?.name || "No file"
+    };
 
-    // Add timeout handling
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
-
-    // Send to Google Apps Script
-    const response = await fetch(CONFIG.googleScriptUrl, {
-      method: 'POST',
-      body: formData,
-      signal: controller.signal
-    });
-
-    clearTimeout(timeoutId);
-
-    // Check if response is OK
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    // Convert to URL parameters
+    const params = new URLSearchParams();
+    for (const key in formData) {
+      params.append(key, formData[key]);
     }
 
+    const url = `${CONFIG.googleScriptUrl}?${params.toString()}`;
+    
+    const response = await fetch(url);
     const result = await response.json();
-
-    // Check for success message from Google Script
-    if (result.status === 'success') {
-      handleSubmissionSuccess();
-    } else {
-      throw new Error(result.message || 'Unknown error from server');
+    
+    if (result.status !== "success") {
+      throw new Error(result.message || "Submission failed");
     }
+    
+    return true;
   } catch (error) {
-    console.error('Submission error:', error);
-    
-    let errorMessage = 'Submission failed. Please try again later.';
-    if (error.name === 'AbortError') {
-      errorMessage = 'Request timed out. Check your internet connection.';
-    }
-    
-    showToast(errorMessage);
-    dom.submitBtn.innerHTML = '<span class="btn-text">Submit Registration</span>';
-    dom.submitBtn.disabled = false;
+    console.error("Full submission error:", {
+      error: error,
+      message: error.message,
+      stack: error.stack
+    });
+    throw error;
   }
 }
 function handleSubmissionSuccess() {
