@@ -1,9 +1,15 @@
+import React from 'react';
+import './App.css'
+import Hero from './hero.jsx';
+import Navigation from './Components/Navigation.jsx';
 
-const App = ()=> {
+
+const App = () => {
   return (
     <div>
-      <h1>This is my first app </h1>
+      <Navigation />
     </div>
   )
 }
+
 export default App;
