@@ -1,15 +1,19 @@
-import React from 'react';
+
 import './App.css'
-import Hero from './hero.jsx';
-import Navigation from './Components/Navigation.jsx';
+import HeroSection  from './Components/Hero.jsx';
+
+import Navigation from './Components/Navigation.jsx'
 
 
 const App = () => {
   return (
     <div>
-      <Navigation />
+      <Navigation/>
+      <HeroSection/>
+      {/* Add other components here as needed */}
     </div>
   )
-}
+
+};
 
 export default App;
