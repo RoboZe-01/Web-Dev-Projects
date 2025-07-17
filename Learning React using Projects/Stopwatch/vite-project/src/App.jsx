@@ -1,16 +1,12 @@
-import { useState } from 'react'
 import './App.css'
+import Stopwatch from './Components/stopwatch'  // Changed to capitalized component name
 
 function App() {
- const [time, settime] = useState(time)
-
   return (
     <>
-      <h1>01-stopwaatch</h1>
+      <h1>01-stopwatch</h1>
       <div>
-        <span>
-          {("o" + Math.floor)}
-        </span>
+        <Stopwatch />  {/* Changed to capitalized component name */}
       </div>
     </>
   )
