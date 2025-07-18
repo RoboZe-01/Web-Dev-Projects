@@ -1,74 +1,155 @@
-body{
+/* Base styles */
+body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: hsl(0, 0, 95%);
+  background-color: hsl(225, 100%, 85%);
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
+  box-sizing: border-box;
 }
 
 
+.app-h1{
+  margin-left: 26%;
+  margin-bottom: 8%;
+  margin-top: 9%;
+  font-size: 50px;
+
+}
+
+/* Responsive font sizes using CSS variables */
+:root {
+  --display-font-size: 5rem;
+  --button-font-size: 1.5rem;
+  --heading-font-size: 2rem;
+}
+
+/* Media queries for different screen sizes */
+@media (max-width: 768px) {
+  :root {
+    --display-font-size: 3.5rem;
+    --button-font-size: 1.2rem;
+    --heading-font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  :root {
+    --display-font-size: 2.5rem;
+    --button-font-size: 1rem;
+    --heading-font-size: 1.2rem;
+  }
+  
+  .controls {
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .controls button {
+    width: 100%;
+    margin: 5px 0;
+  }
+}
+
+/* Stopwatch container */
 .stopwatch {
   display: flex;
-  flex-direction:column;
+  flex-direction: column;
   align-items: center;
-  border: 5px solid ;
+  border: 5px solid;
   border-radius: 50px;
   background-color: white;
   padding: 30px;
+  width: 95%;
+  max-width: 500px;
+  box-sizing: border-box;
+  margin: 0 auto;
 }
 
-.display{
-  font-size: 5rem;
+/* Time display */
+.display {
+  font-size: var(--display-font-size);
   font-weight: bold;
   font-family: monospace;
-
   color: black;
-  text-shadow: 2px 2px 2px hsla(0, 0%, 0% , 0.75);
+  text-shadow: 2px 2px 2px hsla(0, 0%, 0%, 0.75);
   margin-bottom: 25px;
-
-
+  text-align: center;
+  word-break: break-all;
 }
 
-/* Designing buttons  */
+/* Button controls */
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
 
-.controls button{
+.controls button {
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: var(--button-font-size);
   padding: 10px 20px;
-  margin: 5px;
   min-width: 125px;
-  border :none;
+  border: none;
   border-radius: 10px;
   cursor: pointer;
   font-family: monospace;
   transition: all 0.2s ease-in-out;
   color: white;
+}
+
+/* Button colors */
+.start-btn { background: hsl(115, 100%, 50%); }
+.stop-btn { background: hsl(9, 100%, 50%); }
+.reset-btn { background: hsl(205, 100%, 60%); }
+.lap-btn { background: hsl(41, 100%, 60%); }
+
+/* Button hover effects */
+.start-btn:hover { background-color: hsl(115, 100%, 35%); }
+.stop-btn:hover { background-color: hsl(9, 100%, 45%); }
+.reset-btn:hover { background-color: hsl(205, 100%, 45%); }
+.lap-btn:hover { background-color: hsl(34, 100%, 40%); }
+
+/* Lap times section */
+.laps {
+  width: 100%;
+  margin-top: 20px;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.laps h3 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+}
+
+.laps ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.laps li {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+  font-family: monospace;
+}
+
+/* For very small devices */
+@media (max-width: 360px) {
+  .stopwatch {
+    padding: 15px;
+    border-radius: 30px;
+  }
   
-
-
-}
-.start-btn{
-  background: greenyellow;
-}
-
-
-/* adding hover effect  */
-.start-btn:hover{
-  background-color: hsl(115, 100%, 35%);
-}
-
-.stop-btn{
-  background: hsl(9, 100%, 50%);
-}
-
-.stop-btn:hover{
-  background-color: hsl(9, 100%, 45%);
-}
-
-
-.reset-btn{
-  background: hsl(205, 100%, 60%);
-}
-
-.reset-btn:hover{
-  background-color: hsl(9, 100%, 55%);
+  .controls button {
+    padding: 8px 15px;
+    min-width: 100px;
+  }
 }

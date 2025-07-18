@@ -4,7 +4,7 @@ import Stopwatch from './Components/stopwatch'  // Changed to capitalized compon
 function App() {
   return (
     <>
-      <h1>01-stopwatch</h1>
+      <h1 className='app-h1'>Stopwatch</h1>
       <div>
         <Stopwatch />  {/* Changed to capitalized component name */}
       </div>
