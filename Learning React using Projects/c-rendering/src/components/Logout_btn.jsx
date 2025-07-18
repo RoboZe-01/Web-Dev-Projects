@@ -1,9 +1,9 @@
 import React from 'react'
 
-const logot_btn = () => {
+const Logout_btn = () => {
   return (
     <button>Log Out</button>
   )
 }
 
-export default logot_btn
+export default Logout_btn
