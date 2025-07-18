@@ -7,29 +7,56 @@ const stopwatch = () => {
   const startTimeRef = useRef(0);
 
   useEffect(()=>{
+    if(isRunning){
+     intervalIdRef.current= setInterval(() => {
+        setElapsedTime(Date.now()-startTimeRef.current)
+      }, 10);
+    }
+    return ()=>{
+      clearInterval(intervalIdRef.current);
+    }
 
-  } , [isRunning]);
+  } ,[isRunning]);
 
     // Function to start the stopwatch 
 
   function start(){
+
+    setisRunning(true);
+    startTimeRef.current= Date.now()- elapsedTime;
 
   }
 
 
   // Function to stop the stopwatch 
   function stop(){
+    setisRunning(false);
 
   }
 
   // Function to reset the stopwatch 
   function resest (){
+    setElapsedTime(0);
+    setisRunning(false);
 
   }
 
   // function to format the time 
   function formatTime (){
-          return `00:00:00`
+
+    let hours = Math.floor(elapsedTime/(1000*60*60));
+    let minutes = Math.floor(elapsedTime/(1000*60) % 60);
+    let seconds = Math.floor((elapsedTime/1000)%60);
+    let miliseconds = Math.floor((elapsedTime%1000)/10);
+
+    hours = String(hours).padStart(2,"0");
+    minutes = String(minutes).padStart(2,"0");
+    seconds = String(seconds).padStart(2,"0");
+    miliseconds = String(miliseconds).padStart(2,"0");
+
+
+    
+          return `${minutes}:${seconds}:${miliseconds}`
   }
   return (
          // div to show the stopwatch
