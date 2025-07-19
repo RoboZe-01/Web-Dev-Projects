@@ -1,0 +1,17 @@
+nav{
+    display: flex;
+    height: 72px;
+    justify-content: space-between;
+    padding: 0 8px;
+}
+
+/* stylling inner ul in navigation */
+nav ul{
+    display: flex;
+    align-items: center;
+    list-style: none;  /* Used to remove  ul dots*/
+    font-size: 20px;
+    gap: 24px;
+    font-weight: 600;
+
+}
