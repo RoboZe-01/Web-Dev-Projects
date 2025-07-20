@@ -1,0 +1,7 @@
+.primary_btn{
+
+  display: flex;
+  align-items: center;
+  
+    padding: 18px 10px;
+}
