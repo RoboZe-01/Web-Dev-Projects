@@ -1,6 +1,6 @@
 import React from 'react'
-import styles from "./ContactHeader.modele.css"
-const ContackHeader = () => {
+import styles from "./ContactHeader.module.css"
+const ContactHeader = () => {
   return (
     <div className={
         `container
@@ -14,4 +14,4 @@ const ContackHeader = () => {
   )
 }
 
-export default ContackHeader
+export default ContactHeader
