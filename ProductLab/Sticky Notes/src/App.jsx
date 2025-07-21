@@ -7,7 +7,7 @@ function App() {
 
   return (
     <>
-    <NotesPage />
+   <NotesPage />
     </>
   )
 }
