@@ -1,9 +1,16 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from "./UseState.module.css"
+import HookExample from '../HookExample';
 
 const UseState = () => {
     const [Count  , SetCount]= useState(0);
     const[inputValue , SetInputvalue]=useState("")
+    useEffect(() => {
+      console.log("re-rendered");
+
+      return () => {};
+    },[Count]) ;
+
   return (
     <>
         <section className={styles.container}>
@@ -17,6 +24,9 @@ const UseState = () => {
               value={inputValue} onChange={(e)=> SetInputvalue(e.target.value)}/>
               <h4>You typed : <strong>{inputValue}</strong> </h4>
             </div>
+
+
+            <HookExample />
         </section>
 
     </>
