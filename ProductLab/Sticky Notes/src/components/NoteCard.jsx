@@ -1,6 +1,7 @@
 import React from 'react'
 import Trash from '../icons/Trash';
 import { useRef  ,useEffect , useState} from 'react';
+import { setNewOffset } from '../utils';
 
 const NoteCard = ({note}) => {
     const body = JSON.parse(note.body);
@@ -38,14 +39,14 @@ const NoteCard = ({note}) => {
         y : mouseStartPos.y - e.clientY,
       };
       
-      console.log('MouseMoveDir : ' ,mouseMoveDir)
-       mouseStartPos.x = e.clientX 
-       mouseStartPos.y = e.clientY
+     
+       mouseStartPos.x = e.clientX ;
+       mouseStartPos.y = e.clientY;
 
-       setPosition ({
-        x: cardRef.current.offsetLeft - mouseMoveDir.x,
-        y: cardRef.current.offsetTop - mouseMoveDir.y,
-       });
+
+       const newPosition = setNewOffset(cardRef.current, mouseMoveDir);
+
+       setPosition (newPosition);
 
     };
 
