@@ -1,9 +1,14 @@
 import React from 'react'
+import { fakeData as notes } from '../assets/FakeData'
+import NoteCard from '../components/NoteCard'
 
 const NotesPage = () => {
   return (
     <> 
-   NotePage 
+   {notes.map(note =>(
+
+    <NoteCard key ={note.$id} note ={note}/>
+   ) )}
 
     
     </>
