@@ -1,7 +1,8 @@
 import React from 'react'
 import Trash from '../icons/Trash';
 import { useRef  ,useEffect , useState} from 'react';
-import { setNewOffset , autoGrow } from '../utils';
+import { setNewOffset , autoGrow , setZIndex } from '../utils';
+
 
 
 const NoteCard = ({note}) => {
@@ -26,6 +27,8 @@ const NoteCard = ({note}) => {
 
       document.addEventListener('mousemove' , mouseMove);
       document.addEventListener('mouseup' , mouseUp);
+
+      setZIndex(cardRef.current);
     };
  
     
@@ -75,6 +78,7 @@ const NoteCard = ({note}) => {
         onInput={()=>{
           autoGrow(textAreaRef);
         }}
+        onFocus={()=> {setZIndex(cardRef.current)}}
         ref ={textAreaRef}
         style={{color : colors.colorText}}>
           
