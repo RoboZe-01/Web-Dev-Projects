@@ -15,7 +15,4 @@
 
 `useEffect(() => {
     <! --Write the function of the useeffect-->
- } , [dependency array ( Varible on which it is dependent)]) 
- 
- 
- `
+ } , [dependency array ( Varible on which it is dependent)])`
