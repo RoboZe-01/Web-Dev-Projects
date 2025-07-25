@@ -53,3 +53,7 @@
 5. useEffect(()=>{
     //calls on changon both the props
     }[prop1,prop2])
+
+
+
+## 
