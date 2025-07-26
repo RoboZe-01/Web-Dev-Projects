@@ -5,6 +5,7 @@ import Home from "./components/Home";
 import Dashboard from "./components/Dashboard";
 import About from "./components/About";
 import Navbar from "./components/Navbar";
+import './App.css'
 
 // Step 1 : Importing the router dom 
 
@@ -38,7 +39,10 @@ const router = createBrowserRouter(
         <Dashboard />
         <Home />
       </div>,
-  }
+  },
+  {
+    path :"student/:id"
+  },
 ]
 
 );
