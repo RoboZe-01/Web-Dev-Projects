@@ -1,14 +1,12 @@
-import { useState } from 'react'
-import './App.css'
+import './index.css'
 import NotesPage from './Pages/NotesPage'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-   <NotesPage />
-    </>
+    <div id="app">
+      <NotesPage />
+    </div>
   )
 }
+
 export default App

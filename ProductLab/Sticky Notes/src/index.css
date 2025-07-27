@@ -1,7 +1,7 @@
 :root {
   /* Color Variables */
   --bg-primary: #212228;
-  --bg-secondary: #2d2e36; /* Brighter for grid visibility */
+  --bg-secondary: #2d2e36;
   --text-primary: rgba(255, 255, 255, 0.87);
   --grid-line-thickness: 1px;
   --grid-cell-size: 24px;
@@ -11,11 +11,11 @@
   line-height: 1.5;
   font-weight: 400;
 
-  /* Color Scheme (Supports Dark/Light Mode) */
+  /* Color Scheme */
   color-scheme: light dark;
   color: var(--text-primary);
 
-  /* Font Rendering Optimizations */
+  /* Font Rendering */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -34,7 +34,6 @@ body {
   background-color: var(--bg-primary);
 }
 
-/* Main App Container with Visible Grid */
 #app {
   min-height: 100vh;
   background-color: var(--bg-primary);
@@ -45,14 +44,12 @@ body {
   position: relative;
 }
 
-/* Optional: Smooth Scrolling (If Needed) */
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
   }
 }
 
-/* Optional: Dark/Light Mode Support */
 @media (prefers-color-scheme: light) {
   :root {
     --bg-primary: #f5f5f7;
@@ -62,42 +59,131 @@ body {
 }
 
 .card {
-    width: 400px;
-    border-radius: 5px;
-    cursor: pointer;
-    position: absolute;
-    box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075), 0 2px 2px hsl(0deg 0% 0% /
-                    0.075), 0 4px 4px hsl(0deg 0% 0% / 0.075), 0 8px 8px hsl(0deg
-                    0% 0% / 0.075), 0 16px 16px hsl(0deg 0% 0% / 0.075);
+  width: 400px;
+  min-height: 150px;
+  border-radius: 5px;
+  cursor: pointer;
+  position: absolute;
+  box-shadow: 0 1px 1px hsl(0deg 0% 0% / 0.075), 0 2px 2px hsl(0deg 0% 0% / 0.075), 
+              0 4px 4px hsl(0deg 0% 0% / 0.075), 0 8px 8px hsl(0deg 0% 0% / 0.075), 
+              0 16px 16px hsl(0deg 0% 0% / 0.075);
+  display: flex;
+  flex-direction: column;
 }
 
 .card-header {
-
-    border-radius: 5px 5px 0 0;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px;
+  border-radius: 5px 5px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+  cursor: move;
 }
 
-
 .card-body {
-    padding: 1em;
-    border-radius: 0 0 5px 5px;
+  padding: 1em;
+  border-radius: 0 0 5px 5px;
+  flex-grow: 1;
 }
  
 .card-body textarea {
-    background-color: inherit;
-    border: none;
-    width: 100%;
-    height: 100%;
-    resize: none;
-    font-size: 16px;
+  background-color: inherit;
+  border: none;
+  width: 100%;
+  height: 100%;
+  resize: none;
+  font-size: 16px;
+  min-height: 100px;
 }
  
 textarea:focus {
-    background-color: inherit;
-    outline: none;
-    width: 100%;
-    height: 100%;
+  outline: none;
+}
+
+.add-note-button {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  background-color: #4CAF50;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+/* Optional: Add some minimum width and max-width for better appearance */
+.add-note-button {
+  min-width: 120px;
+  max-width: 200px;
+  white-space: nowrap;
+}
+
+.add-note-button:hover {
+  background-color: #45a049;
+  transform: scale(1.05);
+}
+
+.color-picker {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color: var(--bg-secondary);
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 1000;
+}
+
+.color-picker label {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+}
+
+.resize-handle {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: 10px;
+  height: 10px;
+  background: rgba(0,0,0,0.2);
+  cursor: nwse-resize;
+  border-radius: 2px;
+}
+
+.note-title {
+  flex-grow: 1;
+  padding: 0 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.note-title-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid rgba(255,255,255,0.5);
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.palette-icon {
+  cursor: pointer;
+  font-size: 1.2em;
+}
+
+.trash-icon {
+  cursor: pointer;
+  font-size: 1.2em;
 }
