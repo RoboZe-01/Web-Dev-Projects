@@ -6,7 +6,7 @@ const NoteCard = ({ note, onDelete, onUpdate }) => {
     const body = JSON.parse(note.body)
     const [position, setPosition] = useState(JSON.parse(note.position))
     const [colors, setColors] = useState(JSON.parse(note.colors))
-    const [size, setSize] = useState({ width: 400, height: 'auto' })
+    const [size, setSize] = useState({ width: Math.min(400, window.innerWidth * 0.9), height: 'auto' })
     const [title, setTitle] = useState(note.title || "Untitled")
     const [isEditingTitle, setIsEditingTitle] = useState(false)
     const [showColorPicker, setShowColorPicker] = useState(false)
@@ -21,23 +21,28 @@ const NoteCard = ({ note, onDelete, onUpdate }) => {
 
     const mouseDown = (e) => {
         if (e.target.classList.contains('resize-handle')) return
-        mouseStartPos.x = e.clientX 
-        mouseStartPos.y = e.clientY
+        mouseStartPos.x = e.clientX || e.touches[0].clientX
+        mouseStartPos.y = e.clientY || e.touches[0].clientY
 
         document.addEventListener('mousemove', mouseMove)
         document.addEventListener('mouseup', mouseUp)
+        document.addEventListener('touchmove', mouseMove)
+        document.addEventListener('touchend', mouseUp)
 
         setZIndex(cardRef.current)
     }
 
     const mouseMove = (e) => {
+        const clientX = e.clientX || e.touches[0].clientX
+        const clientY = e.clientY || e.touches[0].clientY
+        
         const mouseMoveDir = {
-            x: mouseStartPos.x - e.clientX,
-            y: mouseStartPos.y - e.clientY,
+            x: mouseStartPos.x - clientX,
+            y: mouseStartPos.y - clientY,
         }
         
-        mouseStartPos.x = e.clientX
-        mouseStartPos.y = e.clientY
+        mouseStartPos.x = clientX
+        mouseStartPos.y = clientY
 
         const newPosition = setNewOffset(cardRef.current, mouseMoveDir)
         setPosition(newPosition)
@@ -47,10 +52,13 @@ const NoteCard = ({ note, onDelete, onUpdate }) => {
     const mouseUp = () => {
         document.removeEventListener("mousemove", mouseMove)
         document.removeEventListener("mouseup", mouseUp)
+        document.removeEventListener("touchmove", mouseMove)
+        document.removeEventListener("touchend", mouseUp)
     }
 
     const handleResize = (e) => {
-        const newWidth = Math.max(200, e.clientX - cardRef.current.offsetLeft)
+        const clientX = e.clientX || e.touches[0].clientX
+        const newWidth = Math.max(200, Math.min(clientX - cardRef.current.offsetLeft, window.innerWidth * 0.9))
         setSize({...size, width: newWidth})
     }
 
@@ -83,11 +91,14 @@ const NoteCard = ({ note, onDelete, onUpdate }) => {
                 backgroundColor: colors.colorBody,
                 left: `${position.x}px`,
                 top: `${position.y}px`,
-                width: `${size.width}px`
+                width: `${size.width}px`,
+                minHeight: 'clamp(150px, 30vh, 250px)'
             }}
+            onTouchStart={mouseDown}
         >
             <div
                 onMouseDown={mouseDown}
+                onTouchStart={mouseDown}
                 className="card-header" 
                 style={{ backgroundColor: colors.colorHeader }}
             >
@@ -106,23 +117,32 @@ const NoteCard = ({ note, onDelete, onUpdate }) => {
                     <div 
                         className="note-title" 
                         onDoubleClick={() => setIsEditingTitle(true)}
+                        onTouchEnd={() => setIsEditingTitle(true)}
                         style={{ color: colors.colorText }}
                     >
                         {title}
                     </div>
                 )}
                 
-                <div style={{ display: 'flex', gap: '10px' }}>
+                <div style={{ display: 'flex', gap: 'clamp(8px, 2vmin, 12px)' }}>
                     <span 
                         className="palette-icon"
                         onClick={(e) => {
                             e.stopPropagation()
                             setShowColorPicker(!showColorPicker)
                         }}
+                        onTouchEnd={(e) => {
+                            e.stopPropagation()
+                            setShowColorPicker(!showColorPicker)
+                        }}
                     >
                         🎨
                     </span>
-                    <Trash onClick={handleDelete} className="trash-icon" />
+                    <Trash 
+                        onClick={handleDelete} 
+                        onTouchEnd={handleDelete}
+                        className="trash-icon" 
+                    />
                 </div>
                 
                 {showColorPicker && (
@@ -164,7 +184,10 @@ const NoteCard = ({ note, onDelete, onUpdate }) => {
                     onInput={() => autoGrow(textAreaRef)}
                     onFocus={() => setZIndex(cardRef.current)}
                     ref={textAreaRef}
-                    style={{ color: colors.colorText }}
+                    style={{ 
+                        color: colors.colorText,
+                        fontSize: 'clamp(14px, 4vmin, 18px)'
+                    }}
                 />
             </div>
             
@@ -175,6 +198,13 @@ const NoteCard = ({ note, onDelete, onUpdate }) => {
                     document.addEventListener('mousemove', handleResize)
                     document.addEventListener('mouseup', () => {
                         document.removeEventListener('mousemove', handleResize)
+                    })
+                }}
+                onTouchStart={(e) => {
+                    e.preventDefault()
+                    document.addEventListener('touchmove', handleResize)
+                    document.addEventListener('touchend', () => {
+                        document.removeEventListener('touchmove', handleResize)
                     })
                 }}
             />

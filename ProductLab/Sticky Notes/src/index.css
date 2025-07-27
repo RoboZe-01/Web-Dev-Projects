@@ -4,7 +4,8 @@
   --bg-secondary: #2d2e36;
   --text-primary: rgba(255, 255, 255, 0.87);
   --grid-line-thickness: 1px;
-  --grid-cell-size: 24px;
+  --grid-cell-size: clamp(16px, 3vmin, 24px);
+  font-size: clamp(14px, 2vmin, 16px);
 
   /* Typography */
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -59,8 +60,9 @@ body {
 }
 
 .card {
-  width: 400px;
-  min-height: 150px;
+
+  width: min(400px, 90vw);
+  min-height: clamp(150px, 30vh, 250px);
   border-radius: 5px;
   cursor: pointer;
   position: absolute;
@@ -186,4 +188,44 @@ textarea:focus {
 .trash-icon {
   cursor: pointer;
   font-size: 1.2em;
+}
+
+/* Touch Device Optimizations */
+@media (pointer: coarse) {
+  .card-header {
+    padding: 12px 15px; /* Larger touch targets */
+  }
+  .palette-icon, 
+  .trash-icon {
+    font-size: 1.5em;
+    padding: 8px;
+  }
+  .resize-handle {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Small Mobile Devices */
+@media (max-width: 480px) {
+  .color-picker {
+    flex-direction: row; /* Horizontal on small screens */
+    top: 40px;
+    right: auto;
+    left: 0;
+  }
+}
+
+/* Tablet Landscape */
+@media (min-width: 768px) and (orientation: landscape) {
+  .card {
+    width: min(350px, 40vw);
+  }
+}
+
+/* Prevent textarea zoom on iOS */
+@media (max-width: 480px) {
+  .card-body textarea {
+    font-size: 16px;
+  }
 }
