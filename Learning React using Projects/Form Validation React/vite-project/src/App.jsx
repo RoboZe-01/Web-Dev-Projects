@@ -6,7 +6,7 @@ function App() {
 
   return (
   <>
-  <h1>Form validation and handeling in react</h1>
+  <h1 className='text-5xl bg-red'>Form validation and handeling in react</h1>
   </>
   )
 }
