@@ -1,14 +1,23 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useForm } from "react-hook-form"
+
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
-
+  
+   const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm ();
   return (
     <>
     <h1>Hello ji </h1>
+    <form action="">
+      <div>
+        <label htmlFor="">First Name </label>
+      </div>
+    </form>
     </>
   );
 }
