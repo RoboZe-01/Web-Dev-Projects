@@ -13,6 +13,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.input-error{
+  border: 1px solid red;
+
+}
+.error-msg{
+  color: red;
+}
+
 a {
   font-weight: 500;
   color: #646cff;

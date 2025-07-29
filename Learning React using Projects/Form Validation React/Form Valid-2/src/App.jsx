@@ -24,13 +24,23 @@ function App() {
       {/* Div of first Name  */}
       <div>
         <label >First Name : </label>
-        <input {...register('firstName')} />
+        <input className={errors.firstName ?'input-error' : ""}
+        {...register('firstName' , 
+          {required:true ,
+           minLength:{value:3 , message:'Min len atleast 2'} , /** Here we learned that we can assign min and max length and validate accordingly */
+           maxLength:{value:12, message:'Keep your name under 12 characters'}})} />
+
+           {errors.firstName && <p className='error-msg'>{errors.firstName.message} </p>}
+      
+      
       </div>
       <br />
+     
+     
       {/* Middle Name div  */}
       <div>
         <label >Middle Name : </label>
-        <input {...register('middleName')} />
+        <input {...register('middleName', {required:true})} />
       </div>
        <br />
        
@@ -39,7 +49,7 @@ function App() {
       <div>
         
         <label>Last Name : </label>
-        <input {...register('lastName')} />
+        <input {...register('lastName' , {required:true})} />
       </div>
       
       <br />
