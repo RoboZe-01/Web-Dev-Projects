@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Choose Your Brand Color</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Pick Your Personal Brand Color</h1>
+    <select id="colorPicker">
+      <option value="">-- Select a Color --</option>
+      <option value="purple">Electric Purple</option>
+      <option value="navy">Deep Navy Blue</option>
+      <option value="yellow">Cyber Yellow</option>
+      <option value="aqua">Neon Aqua</option>
+      <option value="gray">Light Gray</option>
+    </select>
+    <button onclick="showColor()">Check Color</button>
+
+    <div id="preview" class="preview-box">
+      <p id="colorName"></p>
+      <p id="colorDesc"></p>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
